@@ -1,0 +1,24 @@
+gem_root = File.expand_path(File.dirname(__FILE__))
+namespace :roodi do
+<%- if bundler? -%>
+  require 'roodi_task'
+  RoodiTask.new(
+    name: :verify,
+    patterns: ["#{gem_root}/lib"]
+  )
+<%- else -%>
+  begin
+    require 'roodi_task'
+    RoodiTask.new(
+      name: :verify,
+      patterns: ["#{gem_root}/lib"]
+    )
+  rescue LoadError => e
+    task :verify do
+      warn e.message
+    end
+  end
+<%- end -%>
+end
+Rake::Task['roodi:roodi'].clear
+task :default => ['roodi:verify']
