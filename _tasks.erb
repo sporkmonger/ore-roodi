@@ -20,5 +20,8 @@ namespace :roodi do
   end
 <%- end -%>
 end
-Rake::Task['roodi:roodi'].clear
+begin
+  Rake::Task['roodi:roodi'].clear
+rescue RuntimeError
+end
 task :default => ['roodi:verify']
